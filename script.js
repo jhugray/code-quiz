@@ -1,5 +1,6 @@
 var quizContainer = document.getElementById("mainContent");
 var scores = document.getElementById("highscores");
+var timerEl = document.getElementById("timer");
 
 var quizQuestions = [
   {
@@ -20,7 +21,7 @@ var quizQuestions = [
       3: "Dog", 
       4: "Unicorn"
     },
-    answer: 1
+    answer: "1. Cow"
   },
   {
     question: "Which of the following is a fruit?",
@@ -31,7 +32,7 @@ var quizQuestions = [
       4: "Broccoli"
     },
       
-    answer: 3
+    answer: "3. Pear"
   },
   {
     question: "What colour is grass?",
@@ -51,10 +52,27 @@ var quizQuestions = [
       3: "Blue", 
       4: "Red"
     },
-    answer: 4
+    answer: "4. Red"
   },
 ];
+function countdown(){
+  var timeLeft= 60;
 
+  var timerInterval = setInterval(function () {
+   if (timeLeft >1) {
+      timerEl.textContent = timeLeft + ' seconds remaining';
+      timeLeft--;
+    } else if (timeLeft === 1) {
+     timerEl.textContent = timeLeft + ' second remaining';
+      timeLeft --;
+    } else {
+      timerEl.textContent = 'You are out of time :(';
+      clearInterval(timerInterval);
+      // displayMessage(); - add function to take you to the score page
+    }
+    
+  }, 1000);
+}
 
 document.getElementById("startBtn").addEventListener("click", startGame);
 
@@ -62,6 +80,7 @@ function startGame() {
   var introContent = document.getElementById("intro");
   introContent.remove();
   playGame();
+  countdown();
 }
 
 function playGame() {
