@@ -1,6 +1,9 @@
-// var quizContainer = document.getElementById("mainContent");
+var quizContainer = document.getElementById("mainContent");
 var scores = document.getElementById("highscores");
 var timerEl = document.getElementById("timer");
+var score = 0;
+var timeLeft= 60;
+var currentQuestionNumber = 0;
 
 var quizQuestions = [
   {
@@ -15,54 +18,52 @@ var quizQuestions = [
   },
   {
     question: "What animal goes moo?",
-    possibleAnswers: {
-      1: "Cow",
-      2: "Horse", 
-      3: "Dog", 
-      4: "Unicorn"
-    },
+    possibleAnswers: [
+      "1. Cow",
+      "2. Horse", 
+      "3. Dog", 
+      "4. Unicorn"
+    ],
     answer: "1. Cow"
   },
   {
     question: "Which of the following is a fruit?",
-    possibleAnswers: {
-      1: "Diamond",
-      2: "Sun", 
-      3: "Pear", 
-      4: "Broccoli"
-    },
-      
+    possibleAnswers: [
+      "1. Broccoli",
+      "2. Lamp",
+      "3. Pear",
+      "4. Spaghetti"
+    ],
+
     answer: "3. Pear"
   },
   {
     question: "What colour is grass?",
-    possibleAnswers: {
-      1: "Purple",
-      2: "Green", 
-      3: "Blue", 
-      4: "Red"
-    },
+    possibleAnswers: [
+      "1. Purple",
+      "2. Green", 
+      "3. Blue", 
+      "4. Red"
+    ],
     answer: "2. Green"
   },
   {
     question: "What colour is a stop sign?",
-    possibleAnswers: {
-      1: "Purple",
-      2: "Green", 
-      3: "Blue", 
-      4: "Red"
-    },
+    possibleAnswers: [
+      "1. Purple",
+      "2. Green", 
+      "3. Blue", 
+      "4. Red"
+    ],
     answer: "4. Red"
   },
 ];
 
 function countdown(){
-  var timeLeft= 60;
-
-  var timerInterval = setInterval(function () {
+  var timerInterval = setInterval(function() {
    if (timeLeft >1) {
       timerEl.textContent = timeLeft + ' seconds remaining';
-      timeLeft--;
+      timeLeft --;
     } else if (timeLeft === 1) {
      timerEl.textContent = timeLeft + ' second remaining';
       timeLeft --;
@@ -71,46 +72,60 @@ function countdown(){
       clearInterval(timerInterval);
       // displayMessage(); - add function to take you to the score page
     }
-    
   }, 1000);
 }
+
+function timePenalty() {
+  timerEl.textContent = timeLeft-10;
+}
+
+
 
 function startGame() {
   var introContent = document.getElementById("intro");
   introContent.remove();
-  playGame();
+  setGameQuestion();
   countdown();
 }
 
-function playGame() {
-  var score = 0
+function nextQuestion() {
+  quizContainer.innerHTML= ""
+  currentQuestionNumber ++;
+  setGameQuestion();
+}
+
+
+function setGameQuestion() {
   var questionEl = document.createElement("h2");
-  questionEl.innerHTML = quizQuestions[0].question;
+  questionEl.innerHTML = quizQuestions[currentQuestionNumber].question;
   document.getElementById("mainContent").appendChild(questionEl);
-  for(var i=0; i < quizQuestions[0].possibleAnswers.length; i++) {
+  for(var i=0; i < quizQuestions[currentQuestionNumber].possibleAnswers.length; i++) {
+    console.log(quizQuestions[currentQuestionNumber].possibleAnswers[i]);
     var possibleAnsEl = document.createElement("button");
-    possibleAnsEl.innerHTML = quizQuestions[0].possibleAnswers[i];
+    possibleAnsEl.innerHTML = quizQuestions[currentQuestionNumber].possibleAnswers[i];
     document.getElementById("mainContent").appendChild(possibleAnsEl);
   
-    if (quizQuestions[0].possibleAnswers[i] === quizQuestions[0].answer) {
-      possibleAnsEl.addEventListener("click", function (event) {
+    if (quizQuestions[currentQuestionNumber].possibleAnswers[i] === quizQuestions[currentQuestionNumber].answer) {
+      possibleAnsEl.addEventListener("click", function(event) {
         score += 1;
-        event.target.style.backgroundColor = "green";
+        event.target.style.backgroundColor = "#4dff4d";
         event.target.textContent += " ✅ ";
-        console.log("correct")
+        console.log("correct");
+        setTimeout(nextQuestion, 3000);
       });
     }
 
     else {
-      possibleAnsEl.addEventListener("click", function (event) {
-        event.target.style.backgroundColor = "red";
+      possibleAnsEl.addEventListener("click", function(event) {
+        event.target.style.backgroundColor = " #ff8080";
         event.target.textContent += " ❌";
-        console.log("wrong")
+        console.log("wrong");
+        timePenalty();
+        setTimeout(nextQuestion, 3000);
       });
     }
   }
 }
-
 
 
 
