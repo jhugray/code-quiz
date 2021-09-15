@@ -1,4 +1,4 @@
-var quizContainer = document.getElementById("mainContent");
+// var quizContainer = document.getElementById("mainContent");
 var scores = document.getElementById("highscores");
 var timerEl = document.getElementById("timer");
 
@@ -42,7 +42,7 @@ var quizQuestions = [
       3: "Blue", 
       4: "Red"
     },
-    answer: 2
+    answer: "2. Green"
   },
   {
     question: "What colour is a stop sign?",
@@ -55,6 +55,7 @@ var quizQuestions = [
     answer: "4. Red"
   },
 ];
+
 function countdown(){
   var timeLeft= 60;
 
@@ -74,8 +75,6 @@ function countdown(){
   }, 1000);
 }
 
-document.getElementById("startBtn").addEventListener("click", startGame);
-
 function startGame() {
   var introContent = document.getElementById("intro");
   introContent.remove();
@@ -92,19 +91,32 @@ function playGame() {
     var possibleAnsEl = document.createElement("button");
     possibleAnsEl.innerHTML = quizQuestions[0].possibleAnswers[i];
     document.getElementById("mainContent").appendChild(possibleAnsEl);
-
   
-  // if (userAnswer === quizQuestions[i].answer) {
-  //   score += 1;
-  // }
-  // else {
-  
-  //   }
+    if (quizQuestions[0].possibleAnswers[i] === quizQuestions[0].answer) {
+      possibleAnsEl.addEventListener("click", function (event) {
+        score += 1;
+        event.target.style.backgroundColor = "green";
+        event.target.textContent += " ✅ ";
+        console.log("correct")
+      });
+    }
 
-  };
+    else {
+      possibleAnsEl.addEventListener("click", function (event) {
+        event.target.style.backgroundColor = "red";
+        event.target.textContent += " ❌";
+        console.log("wrong")
+      });
+    }
+  }
 }
 
 
+
+
+
+
+document.getElementById("startBtn").addEventListener("click", startGame);
 
 
 
@@ -119,4 +131,3 @@ function playGame() {
 // display next question, repeat until time is done
 // display their final score, provide option to add their intiials to the leader board
 // navigate option to leader board with scores saved in local storage
-
