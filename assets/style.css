@@ -30,6 +30,9 @@ button {
   background-color: #9bc5d4;
 }
 
-
+table {
+  display: flex;
+  justify-content: center;
+}
 
 

@@ -4,6 +4,7 @@ var timerEl = document.getElementById("timer");
 var score = 0;
 var timeLeft= 60;
 var currentQuestionNumber = 0;
+var playerName = "";
 
 var quizQuestions = [
   {
@@ -143,11 +144,38 @@ function scorePage() {
   var highScoreEl= document.createElement("h2");
   document.getElementById("mainContent").appendChild(highScoreEl);
   highScoreEl.innerHTML = "All Done! <br /> <br /> Your final score is: " + score;
+  var playerNameForm = document.createElement("form");
+  var playerNameLabel = document.createElement("label");
+  var playerNameInput = document.createElement("input");
+  var playerNameSubmit = document.createElement("input");
+  playerNameForm.appendChild(playerNameLabel);
+  playerNameForm.appendChild(playerNameInput);
+  playerNameForm.appendChild(playerNameSubmit);
+  document.getElementById("mainContent").appendChild(playerNameForm);
+  playerNameLabel.innerHTML = "Please enter your initials: ";
+  playerNameSubmit.setAttribute("type", "submit");
+  playerNameSubmit.addEventListener("click", function(event){
+      event.preventDefault();
+    });
+  leaderBoard();
 }
+
+
 
 function saveScore() {
   localStorage.setItem("score", score);
+  
 }
+
+function leaderBoard() {
+  var highScoreHeaderEl = document.createElement("h3");
+  document.getElementById("mainContent").appendChild(highScoreHeaderEl);
+  highScoreHeaderEl.textContent = "Leader Board";
+  var leaderBoardTableEl = document.createElement("table");
+  document.getElementById("mainContent").appendChild(leaderBoardTableEl);
+  leaderBoardTableEl.innerHTML = playerName + score;
+}
+
 
 document.getElementById("highscores").addEventListener("click", exitToScores);
 
