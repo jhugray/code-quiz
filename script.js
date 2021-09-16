@@ -1,5 +1,5 @@
 var quizContainer = document.getElementById("mainContent");
-var scores = document.getElementById("highscores");
+// var scores = document.getElementById("highscores");
 var timerEl = document.getElementById("timer");
 var score = 0;
 var timeLeft= 60;
@@ -70,7 +70,8 @@ function countdown(){
     } else {
       timerEl.textContent = 'You are out of time :(';
       clearInterval(timerInterval);
-      // displayMessage(); - add function to take you to the score page
+      quizContainer.innerHTML="";
+      scorePage();
     }
   }, 1000);
 }
@@ -78,8 +79,6 @@ function countdown(){
 function timePenalty() {
   timerEl.textContent = timeLeft-10;
 }
-
-
 
 function startGame() {
   var introContent = document.getElementById("intro");
@@ -89,9 +88,13 @@ function startGame() {
 }
 
 function nextQuestion() {
-  quizContainer.innerHTML= ""
+  quizContainer.innerHTML= "";
   currentQuestionNumber ++;
-  setGameQuestion();
+  if (currentQuestionNumber >= quizQuestions.length) {
+    scorePage();
+  } else {
+    setGameQuestion();
+  }
 }
 
 
@@ -112,6 +115,7 @@ function setGameQuestion() {
         event.target.textContent += " ✅ ";
         console.log("correct");
         setTimeout(nextQuestion, 3000);
+        saveScore();
       });
     }
 
@@ -127,15 +131,33 @@ function setGameQuestion() {
   }
 }
 
+function exitToScores() {
+  var exit = confirm("Are you sure you want to exit the quiz?");
+  if (exit == true) {
+    quizContainer.innerHTML = "";
+    scorePage();
+  } else {}
+}
 
+function scorePage() {
+  var highScoreEl= document.createElement("h2");
+  document.getElementById("mainContent").appendChild(highScoreEl);
+  highScoreEl.innerHTML = "All Done! <br /> <br /> Your final score is: " + score;
+}
 
+function saveScore() {
+  localStorage.setItem("score", score);
+}
 
+document.getElementById("highscores").addEventListener("click", exitToScores);
 
 document.getElementById("startBtn").addEventListener("click", startGame);
 
 
 
 // remember prevent default
+// remove event lsitener/ prevent multiple clicks??? 
+/// countdown time penalty???
 
 
 // display instructions w/button to start the game
