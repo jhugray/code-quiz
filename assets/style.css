@@ -30,6 +30,11 @@ button {
   background-color: #9bc5d4;
 }
 
+button:disabled {
+  color:black;
+  border-color: -internal-light-dark(rgb(118, 118, 118), rgb(133, 133, 133));
+}
+
 table {
   display: flex;
   justify-content: center;

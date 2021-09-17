@@ -78,7 +78,7 @@ function countdown(){
 }
 
 function timePenalty() {
-  timerEl.textContent = timeLeft-10;
+  timeLeft = timeLeft-10;
 }
 
 function startGame() {
@@ -106,6 +106,7 @@ function setGameQuestion() {
   for(var i=0; i < quizQuestions[currentQuestionNumber].possibleAnswers.length; i++) {
     console.log(quizQuestions[currentQuestionNumber].possibleAnswers[i]);
     var possibleAnsEl = document.createElement("button");
+    possibleAnsEl.setAttribute("class", "btnans");
     possibleAnsEl.innerHTML = quizQuestions[currentQuestionNumber].possibleAnswers[i];
     document.getElementById("mainContent").appendChild(possibleAnsEl);
   
@@ -115,8 +116,8 @@ function setGameQuestion() {
         event.target.style.backgroundColor = "#4dff4d";
         event.target.textContent += " ✅ ";
         console.log("correct");
+        disableButtons();
         setTimeout(nextQuestion, 3000);
-        saveScore();
       });
     }
 
@@ -125,11 +126,19 @@ function setGameQuestion() {
         event.target.style.backgroundColor = " #ff8080";
         event.target.textContent += " ❌";
         console.log("wrong");
+        disableButtons();
         timePenalty();
         setTimeout(nextQuestion, 3000);
       });
     }
   }
+}
+
+function disableButtons() {
+  var possibleAnsBtn = document.querySelectorAll(".btnans");
+  for (var i=0; i < possibleAnsBtn.length; i++) {
+    possibleAnsBtn[i].disabled = true; 
+  };
 }
 
 function exitToScores() {
@@ -147,6 +156,7 @@ function scorePage() {
   var playerNameForm = document.createElement("form");
   var playerNameLabel = document.createElement("label");
   var playerNameInput = document.createElement("input");
+  playerNameInput.setAttribute("id", "nameInput");
   var playerNameSubmit = document.createElement("input");
   playerNameForm.appendChild(playerNameLabel);
   playerNameForm.appendChild(playerNameInput);
@@ -156,24 +166,39 @@ function scorePage() {
   playerNameSubmit.setAttribute("type", "submit");
   playerNameSubmit.addEventListener("click", function(event){
       event.preventDefault();
+      playerInitials();
     });
   leaderBoard();
 }
 
 
-
-function saveScore() {
-  localStorage.setItem("score", score);
-  
+function playerInitials() { 
+  var savedPlayerInfo = JSON.parse(localStorage.getItem("playerInfo")) || [];
+  savedPlayerInfo.push({
+    initials: document.getElementById("nameInput").value,
+    score: score
+  })
+  localStorage.setItem("playerInfo", JSON.stringify(savedPlayerInfo));
+  document.querySelector("form").remove();
+  document.querySelector("table").remove();
+  document.querySelector("h3").remove();
+  leaderBoard();
 }
+
+
 
 function leaderBoard() {
   var highScoreHeaderEl = document.createElement("h3");
   document.getElementById("mainContent").appendChild(highScoreHeaderEl);
   highScoreHeaderEl.textContent = "Leader Board";
   var leaderBoardTableEl = document.createElement("table");
+  var leaderBoardTBodyEl = document.createElement("tbody");
+  leaderBoardTableEl.appendChild(leaderBoardTBodyEl);
   document.getElementById("mainContent").appendChild(leaderBoardTableEl);
-  leaderBoardTableEl.innerHTML = playerName + score;
+  var savedPlayerInfo = JSON.parse(localStorage.getItem("playerInfo")) || [];
+  for (var i=0; i < savedPlayerInfo.length; i++) {
+    leaderBoardTBodyEl.innerHTML += "<tr><td>"+ savedPlayerInfo[i].initials + "</td><td> " + savedPlayerInfo[i].score +"</td></tr>";
+  }
 }
 
 
@@ -184,7 +209,7 @@ document.getElementById("startBtn").addEventListener("click", startGame);
 
 
 // remember prevent default
-// remove event lsitener/ prevent multiple clicks??? 
+// remove event lsitener/ prevent multiple clicks???  .... disable all of the buttons once a click is made 
 /// countdown time penalty???
 
 
