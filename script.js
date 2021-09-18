@@ -61,7 +61,7 @@ var quizQuestions = [
   {
     question: "Which tag would you use for Javascript in HTML?",
     possibleAnswers: [
-      "1. &lt;java&gt;&lt;/Java&gt;",
+      "1. &lt;java&gt;&lt;/java&gt;",
       "2. &lt;script&gt;&lt;/script&gt;", 
       "3. &lt;javascript&gt;&lt;/javascript&gt;", 
       "4. &lt;js&gt;&lt;/js&gt;"
@@ -93,10 +93,10 @@ var quizQuestions = [
     possibleAnswers: [
       "1. Document original markup",
       "2. Detailed organized model", 
-      "3. Document Object Model", 
+      "3. Document object model", 
       "4. None of the above"
     ],
-    answer: "3. Document Object Model"
+    answer: "3. Document object model"
   },
 ];
 
@@ -135,6 +135,9 @@ function startGame() {
 
 // cycles through the different questions, when they are all done it tskes you to the score page
 function nextQuestion() {
+  if (timeLeft == 0){
+    return;
+  }
   quizContainer.innerHTML= "";
   currentQuestionNumber ++;
   if (currentQuestionNumber >= quizQuestions.length) {
