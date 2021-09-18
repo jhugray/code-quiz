@@ -1,64 +1,106 @@
 var quizContainer = document.getElementById("mainContent");
-// var scores = document.getElementById("highscores");
 var timerEl = document.getElementById("timer");
 var score = 0;
 var timeLeft= 60;
 var currentQuestionNumber = 0;
 var playerName = "";
 
+// Var holding the quiz content incl questions, possible answers, and the answer
 var quizQuestions = [
   {
-    question: "What colour is the sky?",
+    question: "What would you typically name the primary HTML document?",
     possibleAnswers: [
-      "1. Purple",
-      "2. Green", 
-      "3. Blue", 
-      "4. Red"
+      "1. main.html",
+      "2. html.html", 
+      "3. index.html", 
+      "4. html.index"
     ],
-    answer: "3. Blue"
+    answer: "3. index.html"
   },
   {
-    question: "What animal goes moo?",
+    question: "How would you reference the ID of 'abc' in the CSS file?",
     possibleAnswers: [
-      "1. Cow",
-      "2. Horse", 
-      "3. Dog", 
-      "4. Unicorn"
+      "1. #abc",
+      "2. ID = 'abc'", 
+      "3. .abc", 
+      "4. class.abc"
     ],
-    answer: "1. Cow"
+    answer: "1. #abc"
   },
   {
-    question: "Which of the following is a fruit?",
+    question: "What is shortform name for javascript?",
     possibleAnswers: [
-      "1. Broccoli",
-      "2. Lamp",
-      "3. Pear",
-      "4. Spaghetti"
+      "1. Java",
+      "2. JQuery",
+      "3. All of the above",
+      "4. None of the above"
     ],
 
-    answer: "3. Pear"
+    answer: "4. None of the above"
   },
   {
-    question: "What colour is grass?",
+    question: "What does CSS stand for?",
     possibleAnswers: [
-      "1. Purple",
-      "2. Green", 
-      "3. Blue", 
-      "4. Red"
+      "1. Canadian style selector",
+      "2. Cascading style sheets", 
+      "3. Coded style sheet", 
+      "4. Code syntax stylized"
     ],
-    answer: "2. Green"
+    answer: "2. Cascading style sheets"
   },
   {
-    question: "What colour is a stop sign?",
+    question: "What does HTML stand for?",
     possibleAnswers: [
-      "1. Purple",
-      "2. Green", 
-      "3. Blue", 
-      "4. Red"
+      "1. Holland technical margin layout",
+      "2. Hyper toddler mania language", 
+      "3. HyperText mozilla layout", 
+      "4. HyperText markup language"
     ],
-    answer: "4. Red"
+    answer: "4. HyperText markup language"
+  },
+  {
+    question: "Which tag would you use for Javascript in HTML?",
+    possibleAnswers: [
+      "1. &lt;java&gt;&lt;/Java&gt;",
+      "2. &lt;script&gt;&lt;/script&gt;", 
+      "3. &lt;javascript&gt;&lt;/javascript&gt;", 
+      "4. &lt;js&gt;&lt;/js&gt;"
+    ],
+    answer: "2. &lt;script&gt;&lt;/script&gt;"
+  },
+  {
+    question: "How do you make comments in CSS",
+    possibleAnswers: [
+      "1. /* comment line */",
+      "2. ** comment line **", 
+      "3. &lt;!-- comment line -->", 
+      "4. // comment line //"
+    ],
+    answer: "1. /* comment line */"
+  },
+  {
+    question: "What would the output for Math.floor(1.8) be?",
+    possibleAnswers: [
+      "1. 2",
+      "2. null", 
+      "3. 1", 
+      "4. 1, 8"
+    ],
+    answer: "3. 1"
+  },
+  {
+    question: "What does DOM stand for?",
+    possibleAnswers: [
+      "1. Document original markup",
+      "2. Detailed organized model", 
+      "3. Document Object Model", 
+      "4. None of the above"
+    ],
+    answer: "3. Document Object Model"
   },
 ];
+
+// countdown 
 
 function countdown(){
   var timerInterval = setInterval(function() {
@@ -77,10 +119,13 @@ function countdown(){
   }, 1000);
 }
 
+//time penalty function to be called when a wrong answer is given
+
 function timePenalty() {
   timeLeft = timeLeft-10;
 }
 
+//start game function, to be called when start button is clicked, in order to get rid of main page info and display question
 function startGame() {
   var introContent = document.getElementById("intro");
   introContent.remove();
@@ -88,6 +133,7 @@ function startGame() {
   countdown();
 }
 
+// cycles through the different questions, when they are all done it tskes you to the score page
 function nextQuestion() {
   quizContainer.innerHTML= "";
   currentQuestionNumber ++;
@@ -98,6 +144,7 @@ function nextQuestion() {
   }
 }
 
+// function to display the questions and process the answers given
 
 function setGameQuestion() {
   var questionEl = document.createElement("h2");
@@ -134,6 +181,7 @@ function setGameQuestion() {
   }
 }
 
+// prevents multple clicks once an answer is given
 function disableButtons() {
   var possibleAnsBtn = document.querySelectorAll(".btnans");
   for (var i=0; i < possibleAnsBtn.length; i++) {
@@ -141,6 +189,7 @@ function disableButtons() {
   };
 }
 
+// function to exit to score page at any time
 function exitToScores() {
   var exit = confirm("Are you sure you want to exit the quiz?");
   if (exit == true) {
@@ -149,6 +198,7 @@ function exitToScores() {
   } else {}
 }
 
+// score page with function to provide intiials 
 function scorePage() {
   var highScoreEl= document.createElement("h2");
   document.getElementById("mainContent").appendChild(highScoreEl);
@@ -178,6 +228,7 @@ function playerInitials() {
     initials: document.getElementById("nameInput").value,
     score: score
   })
+  savedPlayerInfo.sort(function(a, b){return b.score-a.score});
   localStorage.setItem("playerInfo", JSON.stringify(savedPlayerInfo));
   document.querySelector("form").remove();
   document.querySelector("table").remove();
@@ -208,16 +259,3 @@ document.getElementById("startBtn").addEventListener("click", startGame);
 
 
 
-// remember prevent default
-// remove event lsitener/ prevent multiple clicks???  .... disable all of the buttons once a click is made 
-/// countdown time penalty???
-
-
-// display instructions w/button to start the game
-// display the first question, with possible answers, and a link to scores, countdown timer is displayed and started
-// take what possible answer they provided, compare it to the actual answer
-// change the style of the selected possibel answer depending on whether it is correct, adjust time if false
-// save the score (to local storage?)
-// display next question, repeat until time is done
-// display their final score, provide option to add their intiials to the leader board
-// navigate option to leader board with scores saved in local storage
